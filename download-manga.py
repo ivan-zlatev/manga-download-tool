@@ -29,9 +29,9 @@ def main(argv):
 	chapters = []
 	pages = []
 	path = path + '/' + manga
-	page = requests.get('http://www.mangareader.net/' + manga + '/1')
-	if len(page.text) < 100:
-		print "\"" + manga + "\" cannot be found on the server."
+	page = requests.get('http://www.mangareader.net/' + manga + '/' + str(start) + '/1')
+	if len(page.text) < 100 or page.text.find("is not released yet") > 0:
+		print "\"" + manga + "\" chapter " + str(start) + " cannot be found on the server."
 		return()
 	if not os.path.exists(path):
 		os.makedirs(path)
@@ -97,8 +97,8 @@ def main(argv):
 		tmp_chap2 = chap[0][0]
 		i += 1
 		if i%group == 0 or int(finish)-int(start) == 0 or i%(int(finish)-int(start)) == 0:
-			zipf = zipfile.ZipFile(str(path + tmp_chap1 + tmp_chap2 + ".cbz"), 'w')
-			print(str(path + tmp_chap1 + tmp_chap2 + ".cbz") + " created")
+			zipf = zipfile.ZipFile(str(path + tmp_chap1 + "-" + tmp_chap2 + ".cbz"), 'w')
+			print(str(path + tmp_chap1 + "-" + tmp_chap2 + ".cbz") + " created")
 			for img in tmp:
 				zipf.write(img, arcname = img.split('/')[-1:][0] )
 			zipf.close()
