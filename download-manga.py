@@ -7,7 +7,6 @@ import sys
 import argparse
 from glob import glob
 
-#def main( start, finish, manga, path):
 def main(argv):
 
 	parser = argparse.ArgumentParser(description='Download some manga.')
@@ -37,7 +36,7 @@ def main(argv):
 	if not os.path.exists(path):
 		os.makedirs(path)
 	path = path + "/" + manga
-# get a list of all chapters and their pages
+	# get a list of all chapters and their pages
 	for i in range( int(start), int(finish)+1):
 		page = requests.get('http://www.mangareader.net/' + manga + '/' + str(i))
 		if len(page.text) < 100 or page.status_code == 404:
@@ -61,7 +60,7 @@ def main(argv):
 	manga_chapter = []
 	tmp_chap = 0
 	tmp_page = 0
-# get a list of all img urls
+	# get a list of all img urls
 	for tmp in chapters:
 		for tmp2 in tmp:
 			if len(tmp2[1].split('/')) == 4:
@@ -84,7 +83,7 @@ def main(argv):
 	tmp = []
 	tmp_chap1 = 0
 	tmp_chap2 = 1
-#download and rename everything
+	#download and rename everything
 	for chap in manga:
 		print "Downloading chapter " + str(int(chap[0][0]))
 		for page in chap:
@@ -111,3 +110,4 @@ def main(argv):
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
+
