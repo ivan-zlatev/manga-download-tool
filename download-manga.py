@@ -4,7 +4,6 @@ import requests
 import os
 import zipfile
 import sys
-import getopt
 import argparse
 from glob import glob
 
