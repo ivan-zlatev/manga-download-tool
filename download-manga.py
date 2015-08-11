@@ -7,7 +7,7 @@ import sys
 import argparse
 from glob import glob
 
-def main(argv):
+def DownloadMangaTool(argv):
 
 	parser = argparse.ArgumentParser(description='Download some manga.')
 	parser.add_argument('-s', '--start', required=True, action='store', nargs=1, type=int, help='An integer argument for first chapter to download.')
@@ -62,6 +62,7 @@ def main(argv):
 	tmp_page = 0
 	# get a list of all img urls
 	for tmp in chapters:
+		print "Downloading information about chapter " + str(tmp[0][0])
 		for tmp2 in tmp:
 			if len(tmp2[1].split('/')) == 4:
 				tmp_chap = tmp2[1].split('/')[2]
@@ -104,10 +105,10 @@ def main(argv):
 			zipf.close()
 			i = 0
 			tmp = []
-	if clear:
-		for img in glob(path + '*.jpg'):
-			os.remove(img)
+			if clear:
+				for img in glob(path + '*.jpg'):
+					os.remove(img)
 
 if __name__ == "__main__":
-	main(sys.argv[1:])
+	DownloadMangaTool(sys.argv[1:])
 
