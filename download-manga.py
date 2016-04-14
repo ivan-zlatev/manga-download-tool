@@ -9,7 +9,7 @@ from glob import glob
 
 def DownloadMangaTool(argv):
 
-	parser = argparse.ArgumentParser(description='Download some manga.')
+	parser = argparse.ArgumentParser(description='Download some manga from http://www.mangareader.net/')
 	parser.add_argument('-s', '--start', required=True, action='store', nargs=1, type=int, help='An integer argument for first chapter to download.')
 	parser.add_argument('-f', '--finish', required=True, action='store', nargs=1, type=int, help='An integer argument for last chapter to download.')
 	parser.add_argument('-m', '--manga', required=True, action='store', nargs=1, type=str, help='A string agrument for the name of the manga to be downloaded. Should be taken from the url in http://mangareader.net')
@@ -72,15 +72,14 @@ def DownloadMangaTool(argv):
 				tmp_page = '1'
 			page = requests.get('http://www.mangareader.net' + tmp2[1])
 			tree = html.fromstring(page.text)
-			for tmp3 in tree.cssselect('img'):
-				for tmp4 in tmp3.items():
-					if tmp4[0] == 'src':
-						manga_page.append([str( "%.5d" % int(tmp_chap) ), str( "%.5d" % int(tmp_page)), tmp4[1]])
+			img = tree.get_element_by_id('img').values()[3]
+			manga_page.append([str( "%.5d" % int(tmp_chap) ), str( "%.5d" % int(tmp_page)), img])
 			manga_chapter.append(manga_page[0])
 			manga_page = []
 		manga.append(manga_chapter)
 		manga_chapter = []
 	i = 0
+	j = 0
 	tmp = []
 	tmp_chap1 = 0
 	tmp_chap2 = 1
@@ -97,7 +96,8 @@ def DownloadMangaTool(argv):
 			tmp_chap1 = chap[0][0]
 		tmp_chap2 = chap[0][0]
 		i += 1
-		if i%group == 0 or int(finish)-int(start) == 0 or i%(int(finish)-int(start)) == 0:
+		j += 1
+		if i%group == 0 or int(finish)-int(start) == 0 or j%(int(finish)-int(start)+1) == 0:
 			zipf = zipfile.ZipFile(str(path + tmp_chap1 + "-" + tmp_chap2 + ".cbz"), 'w')
 			print(str(path + tmp_chap1 + "-" + tmp_chap2 + ".cbz") + " created")
 			for img in tmp:
